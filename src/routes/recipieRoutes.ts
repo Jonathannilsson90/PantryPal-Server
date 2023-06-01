@@ -3,7 +3,8 @@ import * as recipeController from "../controllers/recipieControllers";
 
 const router = express.Router();
 
-router.get("/", recipeController.getRecipies);
-router.post("/", recipeController.createRecipie);
+router.get("/", recipeController.getAllRecipes)
+router.get("/:recipeId", recipeController.getRecipe);
+router.post("/", recipeController.createRecipe);
 
 export default router;
