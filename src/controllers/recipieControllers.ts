@@ -15,13 +15,13 @@ export const getRecipe: RequestHandler = async (req, res, next) => {
   const recipeId = req.params.recipeId;
 
   try {
-    if(!mongoose.isValidObjectId(recipeId)){
-        throw createHttpError(400, "Invalid recipe ID")
+    if (!mongoose.isValidObjectId(recipeId)) {
+      throw createHttpError(400, "Invalid recipe ID");
     }
 
     const recipe = await recipeModel.findById(recipeId).exec();
-    if(!recipe){
-        throw createHttpError(404, "Recipe not found")
+    if (!recipe) {
+      throw createHttpError(404, "Recipe not found");
     }
     res.status(200).json(recipe);
   } catch (error) {
@@ -30,18 +30,23 @@ export const getRecipe: RequestHandler = async (req, res, next) => {
 };
 
 interface createRecipeBody {
-    title: string,
-    text: string,
-    ///img?: string
+  title: string;
+  text: string;
+  ///img?: string
 }
 
-export const createRecipe: RequestHandler<unknown, unknown, createRecipeBody, unknown> = async (req, res, next) => {
+export const createRecipe: RequestHandler<
+  unknown,
+  unknown,
+  createRecipeBody,
+  unknown
+> = async (req, res, next) => {
   const title = req.body.title;
   const text = req.body.text;
 
   try {
-    if(!title || !text) {
-        throw createHttpError(400, "Recipe must have a title and text")
+    if (!title || !text) {
+      throw createHttpError(400, "Recipe must have a title and text");
     }
 
     const newRecipe = await recipeModel.create({
@@ -50,6 +55,68 @@ export const createRecipe: RequestHandler<unknown, unknown, createRecipeBody, un
     });
 
     res.status(201).json(newRecipe);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface updateRecipeParams {
+  recipeId: string;
+}
+
+interface updateRecipeBody {
+  title?: string;
+  text?: string;
+}
+
+export const updateRecipe: RequestHandler<
+  updateRecipeParams,
+  unknown,
+  updateRecipeBody,
+  unknown
+> = async (req, res, next) => {
+  const recipeId = req.params.recipeId;
+  const newTitle = req.body.title;
+  const newText = req.body.text;
+
+  try {
+    if (!mongoose.isValidObjectId(recipeId)) {
+      throw createHttpError(400, "Invalid recipe ID");
+    }
+    if (!newTitle || !newText) {
+      throw createHttpError(400, "Recipe must have a title and text");
+    }
+    const recipe = await recipeModel.findById(recipeId).exec();
+    if (!recipe) {
+      throw createHttpError(404, "Recipe not found");
+    }
+    recipe.title = newTitle;
+    recipe.text = newText;
+
+    const updatedRecipe = await recipe.save();
+
+    res.status(200).json(updatedRecipe);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteRecipe: RequestHandler = async (req, res, next) => {
+  const recipeId = req.params.recipeId;
+
+  try {
+    if (!mongoose.isValidObjectId(recipeId)) {
+      throw createHttpError(400, "Invalid recipe ID");
+    }
+    const recipe = await recipeModel.findById(recipeId).exec();
+
+    if (!recipe) {
+      throw createHttpError(404, "Recipe not found");
+    }
+
+    await recipe.deleteOne();
+
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
