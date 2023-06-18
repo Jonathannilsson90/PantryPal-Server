@@ -32,7 +32,9 @@ export const getRecipe: RequestHandler = async (req, res, next) => {
 interface createRecipeBody {
   title: string;
   text: string;
-  ///img?: string
+  tags: string;
+  image: string;
+  ingredients: string;
 }
 
 export const createRecipe: RequestHandler<
@@ -43,6 +45,9 @@ export const createRecipe: RequestHandler<
 > = async (req, res, next) => {
   const title = req.body.title;
   const text = req.body.text;
+  const tags = req.body.tags;
+  const image = req.body.image;
+  const ingredients = req.body.ingredients;
 
   try {
     if (!title || !text) {
@@ -52,6 +57,9 @@ export const createRecipe: RequestHandler<
     const newRecipe = await recipeModel.create({
       title: title,
       text: text,
+      tags: tags,
+      image: image,
+      ingredients: ingredients,
     });
 
     res.status(201).json(newRecipe);

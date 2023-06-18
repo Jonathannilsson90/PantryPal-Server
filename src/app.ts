@@ -3,12 +3,12 @@ import express, { NextFunction, Request, Response } from "express";
 import recipeRoutes from "./routes/recipieRoutes";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
-import cors from "cors"
+import cors from "cors";
 const app = express();
 
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors())
+app.use(cors());
 
 app.use("/api/recipes", recipeRoutes);
 
