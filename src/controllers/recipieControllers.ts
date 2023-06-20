@@ -32,6 +32,7 @@ export const getRecipe: RequestHandler = async (req, res, next) => {
 interface createRecipeBody {
   title: string;
   text: string;
+  instructions: string;
   tags: string;
   image: string;
   ingredients: string;
@@ -45,6 +46,7 @@ export const createRecipe: RequestHandler<
 > = async (req, res, next) => {
   const title = req.body.title;
   const text = req.body.text;
+  const instructions = req.body.instructions;
   const tags = req.body.tags;
   const image = req.body.image;
   const ingredients = req.body.ingredients;
@@ -57,6 +59,7 @@ export const createRecipe: RequestHandler<
     const newRecipe = await recipeModel.create({
       title: title,
       text: text,
+      instructions: instructions,
       tags: tags,
       image: image,
       ingredients: ingredients,
@@ -75,6 +78,10 @@ interface updateRecipeParams {
 interface updateRecipeBody {
   title?: string;
   text?: string;
+  instructions?: string;
+  tags?:  string[];
+  image?:  string;
+  ingredients?:  {amount?: string; ingredient?: string;}[]
 }
 
 export const updateRecipe: RequestHandler<
@@ -86,12 +93,16 @@ export const updateRecipe: RequestHandler<
   const recipeId = req.params.recipeId;
   const newTitle = req.body.title;
   const newText = req.body.text;
+  const newInstructions = req.body.instructions ?? '';
+  const newTags = Array.isArray(req.body.tags) ? req.body.tags : [req.body.tags || ''];
+  const newImage = req.body.image ?? '';
+  const newIngredients = Array.isArray(req.body.ingredients) ? req.body.ingredients : [{ingredient: req.body.ingredients || '', amount: ''}]
 
   try {
     if (!mongoose.isValidObjectId(recipeId)) {
       throw createHttpError(400, "Invalid recipe ID");
     }
-    if (!newTitle || !newText) {
+    if (!newTitle || !newText ) {
       throw createHttpError(400, "Recipe must have a title and text");
     }
     const recipe = await recipeModel.findById(recipeId).exec();
@@ -100,7 +111,11 @@ export const updateRecipe: RequestHandler<
     }
     recipe.title = newTitle;
     recipe.text = newText;
-
+    recipe.instructions = newInstructions;
+    recipe.tags = newTags;
+    recipe.image = newImage;
+    recipe.ingredients = newIngredients;
+   
     const updatedRecipe = await recipe.save();
 
     res.status(200).json(updatedRecipe);

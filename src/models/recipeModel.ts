@@ -10,6 +10,10 @@ const recipeSchema = new Schema(
       type: String,
       required: true,
     },
+    instructions:{
+type: String,
+required: true,
+    },
     tags: {
       type: [String],
       required: true,
@@ -19,7 +23,7 @@ const recipeSchema = new Schema(
       required: false,
     },
     ingredients: {
-      type: [String],
+      type: [{amount:String, ingredient: String}],
       required: true
     }
   },
