@@ -15,7 +15,7 @@ export const getRecipe: RequestHandler = async (req, res, next) => {
   const recipeId = req.params.recipeId;
 
   try {
-    if (!mongoose.isValidObjectId(recipeId)) {
+    if (!mongoose.Types.ObjectId.isValid(recipeId)) {
       throw createHttpError(400, "Invalid recipe ID");
     }
 
@@ -99,7 +99,7 @@ export const updateRecipe: RequestHandler<
   const newIngredients = Array.isArray(req.body.ingredients) ? req.body.ingredients : [{ingredient: req.body.ingredients || '', amount: ''}]
 
   try {
-    if (!mongoose.isValidObjectId(recipeId)) {
+    if (!mongoose.Types.ObjectId.isValid(recipeId)) {
       throw createHttpError(400, "Invalid recipe ID");
     }
     if (!newTitle || !newText ) {
@@ -128,7 +128,7 @@ export const deleteRecipe: RequestHandler = async (req, res, next) => {
   const recipeId = req.params.recipeId;
 
   try {
-    if (!mongoose.isValidObjectId(recipeId)) {
+    if (!mongoose.Types.ObjectId.isValid(recipeId)) {
       throw createHttpError(400, "Invalid recipe ID");
     }
     const recipe = await recipeModel.findById(recipeId).exec();

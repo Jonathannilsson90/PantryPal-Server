@@ -26,9 +26,12 @@ required: true,
       type: [{amount:String, ingredient: String}],
       required: true
     }
+    
   },
   { timestamps: true }
 );
+
+recipeSchema.index({title: "text", text: "text"});
 
 type Recipe = InferSchemaType<typeof recipeSchema>;
 
