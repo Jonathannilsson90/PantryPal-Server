@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import userModel from "../models/userModel";
 import bcrypt from "bcrypt";
-import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 import env from "../util/validateEnv";
 
