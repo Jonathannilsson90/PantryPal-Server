@@ -23,8 +23,6 @@ export const registerNewUser: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-
 ///Desc     Generate AccessToken
 ///route    POST user/token
 ///Access   Private - Password and Username needs to match
@@ -34,49 +32,58 @@ interface IUser {
   password: string;
 }
 
-export const generateAccessToken: RequestHandler<unknown, unknown, IUser, unknown> = async (req, res, next) => {
-    try {
-      const { username, password } = req.body;
-  
-      const user = await userModel.findOne({ username });
-  
-      if (user) {
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-        if (isPasswordValid) {
-          const payload = {
-            username: user.username,
-          };
-  
-          const accessToken = jwt.sign(payload, env.ACCESS_SECRET_TOKEN);
-          res.json({ accessToken });
-        } else {
-          res.json({ message: "Incorrect login information." });
-        }
-      } else {
-        res.json({ message: "Incorrect login information."});
-      }
-    } catch (error) {
-      next(error);
-    }
-  };
+export const generateAccessToken: RequestHandler<
+  unknown,
+  unknown,
+  IUser,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
 
-  export const deleteUser: RequestHandler = async (req,res,next) => {
-try {
-    const {username, password} = req.body
-    const existingUser = await userModel.findOne({username});
-    
-    if(existingUser) {
-        const isPasswordValid = await bcrypt.compare(
-            password,
-            existingUser.password
-        )
-            if (existingUser && isPasswordValid) {
-                existingUser.deleteOne();
-                res.json("User succcessfully deleted")
-            }
+    const user = await userModel.findOne({ username });
+
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        const payload = {
+          username: user.username,
+        };
+
+        const accessToken = jwt.sign(payload, env.ACCESS_SECRET_TOKEN);
+        res.json({ accessToken });
+      } else {
+        res.status(403).send("Incorrect login information.");
+      }
+    } else {
+      res.status(403).send("Incorrect login information.");
     }
-} catch (error) {
-   next(error) 
-}
+  } catch (error) {
+    next(error);
   }
+};
+
+///Desc     delete user
+///route    delete user
+///Access   Private - Password and Username needs to match
+
+export const deleteUser: RequestHandler = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const existingUser = await userModel.findOne({ username });
+
+    if (existingUser) {
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+      if (existingUser && isPasswordValid) {
+        existingUser.deleteOne();
+        res.status(202).send("User deleted successfully");
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
