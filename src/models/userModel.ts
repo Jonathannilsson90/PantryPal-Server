@@ -1,6 +1,19 @@
 
 import {InferSchemaType, Schema, model} from "mongoose"
 
+const groceryItemSchema = new Schema({
+    amount: {
+        type: String,
+        required: true
+    },
+    ingredient: {
+        type: String,
+        required: true,
+    },
+    
+})
+
+
 const userSchema = new Schema({
 username: {
     type: String,
@@ -11,11 +24,11 @@ password: {
     required: true,
 },
 likedrecipes:{
-    type: [String],
-    default: []
+    type: Array,
+    default: [],
 },
-grocerylist:{
-    type: [String],
+groceryList:{
+    type: [groceryItemSchema],
     default: []
 },
 })
