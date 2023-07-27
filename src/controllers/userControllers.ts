@@ -41,9 +41,6 @@ export const generateAccessToken: RequestHandler<
 > = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    console.log("Received username:", username);
-    console.log("Received password:", password);
-
     const user = await userModel.findOne({ username });
 
     if (user) {
