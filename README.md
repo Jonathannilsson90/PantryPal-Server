@@ -13,7 +13,10 @@ The project is going to be a recipe app that helps the user to save recipes into
 https://github.com/Jonathannilsson90/PantryPal
 
 ## What I've learned:
-queries: How to implement them to a project, and what purpose they fill in a search function
+queries: How to implement them to a project, and what purpose they fill in a search function.
+<br>
 morgan: Package that helps the developer to affirm that certain CRUD-requests made it to the server.
-envalid: Package that helps the user to remove 'process' from each variable saved in .env since it types it in validateEnv in /utils
+<br>
+envalid: Package that helps the user to remove 'process' from each variable saved in .env since it types it in validateEnv in /utils.
+<br>
 httpError: Package that helps the user and the developer to give more accurate error messages, incase of errors.
