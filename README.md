@@ -31,6 +31,3 @@ To visit the app component of this repo please visit: [PantryPal app repository]
 
 ### License
 This project is licensed under the [MIT License](LICENSE).
-
-### Contact
-If you have any questions or suggestions, feel free to contact me at jonathan_nilsson90@hotmail.com.
