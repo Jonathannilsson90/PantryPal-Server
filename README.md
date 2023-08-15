@@ -13,7 +13,7 @@ Rough layout and logical mindmap was constructed in Excalidraw to easen the proj
 - <b>User Authentication:</b> Supports user sign-in and sign up.
 
 
-### Frontend:
+### The app:
 To visit the app component of this repo please visit: [PantryPal app repository](https://github.com/Jonathannilsson90/PantryPal)
 
 ### Learning highlights:
