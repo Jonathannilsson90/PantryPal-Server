@@ -11,8 +11,14 @@ import env from "../util/validateEnv";
 
 export const registerNewUser: RequestHandler = async (req, res, next) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const existingUser = await userModel.findOne({username:req.body.username})
 
+    if(existingUser) {
+      return res.status(400).json({Message: "Username taken."})
+    }
+    
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    
     const user = new userModel({
       username: req.body.username,
       password: hashedPassword,
