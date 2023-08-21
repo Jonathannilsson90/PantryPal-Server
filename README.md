@@ -29,5 +29,12 @@ To visit the app component of this repo please visit: [PantryPal app repository]
   3. Configure envirmont variables in a `.env` file.
   4. Start the server by using `npm start`
 
+### Environment variables
+```
+MONGODB_CONNECTION_STRING
+PORT
+ACCESS_SECRET_TOKEN
+```
+
 ### License
 This project is licensed under the [MIT License](LICENSE).
